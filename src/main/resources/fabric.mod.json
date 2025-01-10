@@ -11,10 +11,10 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "de.devmevtv.project_modification.client.Main"
+      "de.devmevtv.projectmodification.client.ProjectModificationClient"
     ],
     "main": [
-      "de.devmevtv.project_modification.Main"
+      "de.devmevtv.projectmodification.ProjectModification"
     ]
   },
   "mixins": [
