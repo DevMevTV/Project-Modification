@@ -14,7 +14,7 @@ public class ProjectModificationClient implements ClientModInitializer {
         }));
 
         ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> {
-            if (message.getString().startsWith("ȐУȴфঙ") || message.getString().startsWith("Unknown scoreboard objective 'pmod.handshake'")) {
+            if (message.getString().startsWith("ȐУȴфঙ") || message.getString().equals("Unknown scoreboard objective 'pmod.handshake'")) {
                 return false;
             } else {
                 return true;
