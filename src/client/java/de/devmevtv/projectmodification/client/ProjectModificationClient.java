@@ -9,9 +9,10 @@ public class ProjectModificationClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, access) -> {
-            MinecraftClient.getInstance().player.networkHandler.sendCommand("trigger pmodhandshake");
-        });
+        ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> {
+            MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmodhandshake");
+        }));
+
         ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> !message.getString().startsWith("ȐУȴфঙ"));
     }
 }
