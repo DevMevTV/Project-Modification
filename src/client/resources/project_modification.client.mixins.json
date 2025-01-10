@@ -4,6 +4,7 @@
   "package": "de.devmevtv.projectmodification.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "ClientPlayNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
