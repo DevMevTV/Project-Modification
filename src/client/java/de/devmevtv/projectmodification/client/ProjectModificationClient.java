@@ -2,6 +2,7 @@ package de.devmevtv.projectmodification.client;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 
 public class ProjectModificationClient implements ClientModInitializer {
@@ -13,5 +14,6 @@ public class ProjectModificationClient implements ClientModInitializer {
                 handler.sendCommand("trigger test");
             });
         });
+        ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> !message.getString().startsWith("ȐУȴфঙ"));
     }
 }
