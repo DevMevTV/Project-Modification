@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.MinecraftClient;
 
 public class ProjectModificationClient implements ClientModInitializer {
-    public int permissionLevel;
+    public int permissionLevel = 0;
 
     @Override
     public void onInitializeClient() {
