@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "project_modification",
+  "version": "${version}",
+  "name": "Project Modification",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/project_modification/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "de.devmevtv.project_modification.client.Main"
+    ],
+    "main": [
+      "de.devmevtv.project_modification.Main"
+    ]
+  },
+  "mixins": [
+    "project_modification.mixins.json",
+    {
+      "config": "project_modification.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
