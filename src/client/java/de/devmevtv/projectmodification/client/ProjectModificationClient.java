@@ -34,7 +34,7 @@ public class ProjectModificationClient implements ClientModInitializer {
 
                 if (msg.startsWith("LVL_")) {
                     PermissionLevel = Integer.parseInt(msg.substring(4));
-                    MinecraftClient.getInstance().player.sendMessage(Text.literal("You have permission level " + PermissionLevel), false);
+                    MinecraftClient.getInstance().player.sendMessage(Text.literal("You have permission level " + PermissionLevel), true);
                 }
                 return false;
             }
