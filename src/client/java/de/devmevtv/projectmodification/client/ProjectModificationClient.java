@@ -13,6 +13,12 @@ public class ProjectModificationClient implements ClientModInitializer {
             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.handshake");
         }));
 
-        ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> !message.getString().startsWith("ȐУȴфঙ"));
+        ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> {
+            if (message.getString().startsWith("ȐУȴфঙ") || message.getString().startsWith("Unknown scoreboard objective 'pmod.handshake'")) {
+                return false;
+            } else {
+                return true;
+            }
+        });
     }
 }
