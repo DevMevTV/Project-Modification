@@ -1,6 +1,5 @@
 package de.devmevtv.projectmodification.client;
 
-import com.mojang.brigadier.CommandDispatcher;
 import de.devmevtv.projectmodification.client.command.PModCommand;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -11,7 +10,8 @@ import net.minecraft.text.Text;
 
 public class ProjectModificationClient implements ClientModInitializer {
     public static boolean PMOD;
-    public static int PermissionLevel;
+    public static int onlyPMod;
+    public static int permissionLevel;
 
     @Override
     public void onInitializeClient() {
@@ -20,7 +20,8 @@ public class ProjectModificationClient implements ClientModInitializer {
             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.handshake");
         }));
         ClientPlayConnectionEvents.DISCONNECT.register((clientPlayNetworkHandler, minecraftClient) -> {
-            PermissionLevel = 0;
+            permissionLevel = 0;
+            onlyPMod = 0;
         });
 
         ClientReceiveMessageEvents.ALLOW_GAME.register((message, overlay) -> {
@@ -29,18 +30,23 @@ public class ProjectModificationClient implements ClientModInitializer {
                 return false;
             } else if (message.getString().equals("Triggered [pmod.handshake]")) {
                 PMOD = true;
+                MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.request");
+                return false;
+            } else if (message.getString().equals("Triggered [pmod.request]")) {
                 return false;
             }
 
-            if (PMOD == false)
+            if (!PMOD)
                 return true;
 
             if (message.getString().startsWith("ȐУȴфঙ")) {
                 String msg = message.getString().substring(5);
 
                 if (msg.startsWith("LVL_")) {
-                    PermissionLevel = Integer.parseInt(msg.substring(4));
-                    MinecraftClient.getInstance().player.sendMessage(Text.literal("You have permission level " + PermissionLevel), true);
+                    permissionLevel = Integer.parseInt(msg.substring(4));
+                    MinecraftClient.getInstance().player.sendMessage(Text.literal("You have permission level " + permissionLevel), true);
+                } else if (msg.startsWith("SettingsResponse")) {
+                    onlyPMod = Integer.parseInt(msg.substring(16));
                 }
                 return false;
             }
