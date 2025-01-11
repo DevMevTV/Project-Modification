@@ -16,7 +16,8 @@ public class SettingsScreen extends Screen {
     @Override
     protected void init() {
         ButtonWidget uselessButton = ButtonWidget.builder(Text.of("Only PMOD: " + Util.asBoolean(ProjectModificationClient.onlyPMod)), (btn) -> {
-            // Do stuff when the button is clicked here
+            MinecraftClient.getInstance().player.networkHandler.sendChatCommand("scoreboard players set onlyPmod pmod.settings " + (1 - ProjectModificationClient.onlyPMod));
+            MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.request");
         }).dimensions(40, 40, 120, 20).build();
 
         this.addDrawableChild(uselessButton);
