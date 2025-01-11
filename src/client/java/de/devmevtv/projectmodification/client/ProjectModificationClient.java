@@ -1,5 +1,6 @@
 package de.devmevtv.projectmodification.client;
 
+import de.devmevtv.projectmodification.client.command.PModCommand;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
@@ -14,6 +15,7 @@ public class ProjectModificationClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> {
+            PModCommand.register(dispatcher);
             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.handshake");
         }));
         ClientPlayConnectionEvents.DISCONNECT.register((clientPlayNetworkHandler, minecraftClient) -> {
