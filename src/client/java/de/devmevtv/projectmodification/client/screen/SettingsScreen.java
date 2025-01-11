@@ -5,6 +5,7 @@ import de.devmevtv.projectmodification.client.Util;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 
@@ -19,6 +20,7 @@ public class SettingsScreen extends Screen {
             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("scoreboard players set onlyPmod pmod.settings " + (1 - ProjectModificationClient.onlyPMod));
             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.request");
         }).dimensions(40, 40, 120, 20).build();
+        uselessButton.setTooltip(Tooltip.of(Text.of("Determines if people that do not have PMOD installed can join")));
 
         this.addDrawableChild(uselessButton);
     }
