@@ -16,13 +16,13 @@ public class SettingsScreen extends Screen {
 
     @Override
     protected void init() {
-        ButtonWidget uselessButton = ButtonWidget.builder(Text.of("Only PMOD: " + Util.asBoolean(ProjectModificationClient.onlyPMod)), (btn) -> {
+        ButtonWidget onlyPMODButton = ButtonWidget.builder(Text.of("Only PMOD: " + Util.asBoolean(ProjectModificationClient.onlyPMod)), (btn) -> {
             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("scoreboard players set onlyPmod pmod.settings " + (1 - ProjectModificationClient.onlyPMod));
             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.request");
         }).dimensions(40, 40, 120, 20).build();
-        uselessButton.setTooltip(Tooltip.of(Text.of("Determines if people that do not have PMOD installed can join")));
+        onlyPMODButton.setTooltip(Tooltip.of(Text.of("Determines if people that do not have PMOD installed can join")));
 
-        this.addDrawableChild(uselessButton);
+        this.addDrawableChild(onlyPMODButton);
     }
 
     @Override
