@@ -42,12 +42,14 @@ public class ProjectModificationClient implements ClientModInitializer {
             if (message.getString().startsWith("ȐУȴфঙ")) {
                 String msg = message.getString().substring(5);
 
-                if (msg.startsWith("LVL_")) {
-                    permissionLevel = Integer.parseInt(msg.substring(4));
+                if (msg.startsWith("LVL")) {
+                    permissionLevel = Integer.parseInt(msg.substring(3));
                     MinecraftClient.getInstance().player.sendMessage(Text.literal("You have permission level " + permissionLevel), true);
                 } else if (msg.startsWith("SettingsResponse")) {
                     onlyPMod = Integer.parseInt(msg.substring(16));
                 }
+                return false;
+            } else if (message.getString().startsWith("[") && message.getString().contains("[pmod.")) {
                 return false;
             }
 
