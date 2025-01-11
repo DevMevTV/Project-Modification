@@ -13,8 +13,6 @@ public class ProjectModificationClient implements ClientModInitializer {
     public static boolean PMOD;
     public static int PermissionLevel;
 
-    private CommandDispatcher commandDispatcher;
-
     @Override
     public void onInitializeClient() {
         ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> {
@@ -33,6 +31,9 @@ public class ProjectModificationClient implements ClientModInitializer {
                 PMOD = true;
                 return false;
             }
+
+            if (PMOD == false)
+                return true;
 
             if (message.getString().startsWith("ȐУȴфঙ")) {
                 String msg = message.getString().substring(5);

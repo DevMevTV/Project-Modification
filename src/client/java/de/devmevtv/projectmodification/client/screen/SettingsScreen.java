@@ -1,5 +1,6 @@
 package de.devmevtv.projectmodification.client.screen;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -12,7 +13,7 @@ public class SettingsScreen extends Screen {
 
     @Override
     protected void init() {
-        ButtonWidget uselessButton = ButtonWidget.builder(Text.of("Useless Button"), (btn) -> {
+        ButtonWidget uselessButton = ButtonWidget.builder(Text.of("Only PMOD: true"), (btn) -> {
             // Do stuff when the button is clicked here
         }).dimensions(40, 40, 120, 20).build();
 

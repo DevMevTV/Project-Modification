@@ -14,7 +14,7 @@ public class PModCommand {
     public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
         dispatcher.register(
                 ClientCommandManager.literal("pmod")
-                        .requires(fabricClientCommandSource -> ProjectModificationClient.PMOD = true)
+                        .requires(fabricClientCommandSource -> ProjectModificationClient.PMOD)
                         .then(
                                 ClientCommandManager.literal("settings")
                                         .requires(fabricClientCommandSource -> ProjectModificationClient.PermissionLevel >= 1)
