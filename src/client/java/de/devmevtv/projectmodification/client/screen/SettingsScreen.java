@@ -2,6 +2,7 @@ package de.devmevtv.projectmodification.client.screen;
 
 import de.devmevtv.projectmodification.client.ProjectModificationClient;
 import de.devmevtv.projectmodification.client.Util;
+import de.devmevtv.projectmodification.client.command.PModCommand;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -19,6 +20,7 @@ public class SettingsScreen extends Screen {
         ButtonWidget onlyPMODButton = ButtonWidget.builder(Text.of("Only PMOD: " + Util.asBoolean(ProjectModificationClient.onlyPMod)), (btn) -> {
             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("scoreboard players set onlyPmod pmod.settings " + (1 - ProjectModificationClient.onlyPMod));
             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.request");
+            PModCommand.SettingsRequested = true;
         }).dimensions(40, 40, 120, 20).build();
         onlyPMODButton.setTooltip(Tooltip.of(Text.of("Determines if people that do not have PMOD installed can join")));
 
