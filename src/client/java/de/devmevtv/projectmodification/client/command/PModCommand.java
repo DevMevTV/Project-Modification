@@ -22,7 +22,6 @@ public class PModCommand {
                                         .executes(context -> {
                                             Screen currentScreen = MinecraftClient.getInstance().currentScreen;
                                             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.request");
-                                            MinecraftClient.getInstance().send(() -> MinecraftClient.getInstance().setScreen(new SettingsScreen(Text.empty())));
                                             return Command.SINGLE_SUCCESS;
                                         })
                         )

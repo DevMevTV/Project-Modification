@@ -1,6 +1,7 @@
 package de.devmevtv.projectmodification.client;
 
 import de.devmevtv.projectmodification.client.command.PModCommand;
+import de.devmevtv.projectmodification.client.screen.SettingsScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
@@ -30,7 +31,6 @@ public class ProjectModificationClient implements ClientModInitializer {
                 return false;
             } else if (message.getString().equals("Triggered [pmod.handshake]")) {
                 PMOD = true;
-                MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.request");
                 return false;
             } else if (message.getString().equals("Triggered [pmod.request]")) {
                 return false;
@@ -47,6 +47,7 @@ public class ProjectModificationClient implements ClientModInitializer {
                     MinecraftClient.getInstance().player.sendMessage(Text.literal("You have permission level " + permissionLevel), true);
                 } else if (msg.startsWith("SettingsResponse")) {
                     onlyPMod = Integer.parseInt(msg.substring(16));
+                    MinecraftClient.getInstance().send(() -> MinecraftClient.getInstance().setScreen(new SettingsScreen(Text.empty())));
                 }
                 return false;
             } else if (message.getString().startsWith("[") && message.getString().contains("[pmod.")) {
