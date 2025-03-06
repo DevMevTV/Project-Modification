@@ -5,21 +5,47 @@ import de.devmevtv.projectmodification.client.screen.SettingsScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
+import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 public class ProjectModificationClient implements ClientModInitializer {
     public static boolean PMOD;
     public static int onlyPMod;
     public static int permissionLevel;
 
+    public static boolean bypassCommand = false;
+
+    public static Block testBlock;
+
     @Override
     public void onInitializeClient() {
+
+        Identifier id = Identifier.of("pmod", "test_block");
+        RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, id);
+
+        Block.Settings settings = AbstractBlock.Settings.create()
+                .registryKey(key);
+
+        testBlock = Registry.register(Registries.BLOCK, key, new Block(settings));
+
+
+        // -----------
+
         ClientCommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess) -> {
             PModCommand.register(dispatcher);
+            bypassCommand = true;
             MinecraftClient.getInstance().player.networkHandler.sendChatCommand("trigger pmod.handshake");
         }));
+
         ClientPlayConnectionEvents.DISCONNECT.register((clientPlayNetworkHandler, minecraftClient) -> {
             permissionLevel = 0;
             onlyPMod = 0;
@@ -57,8 +83,19 @@ public class ProjectModificationClient implements ClientModInitializer {
                 return false;
             } else if (message.getString().startsWith("Set [pmod.")) {
                 return false;
+            } else if (message.getString().startsWith("[+]") && message.getString().contains("|")) {
+                // this is for later
             }
 
+            return true;
+        });
+
+        ClientSendMessageEvents.ALLOW_COMMAND.register((message) -> {
+            if (!bypassCommand && message.startsWith("trigger pmod")) {
+                MinecraftClient.getInstance().player.sendMessage(Text.of("§cUnknown scoreboard objective '" + message.split(" ")[1] + "'"), false);
+                return false;
+            }
+            bypassCommand = false;
             return true;
         });
     }

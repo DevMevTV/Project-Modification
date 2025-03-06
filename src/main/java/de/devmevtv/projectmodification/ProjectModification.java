@@ -10,5 +10,6 @@ public class ProjectModification implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
     }
 }
