@@ -6,12 +6,13 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import de.devmevtv.projectmodification.client.ProjectModificationClient;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.entity.EntityType;
-import net.minecraft.network.packet.s2c.play.BlockUpdateS2CPacket;
-import net.minecraft.network.packet.s2c.play.CommandSuggestionsS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.item.Items;
+import net.minecraft.network.packet.s2c.play.*;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,18 +46,21 @@ public class ClientPlayNetworkHandlerMixin {
         this.commandSource.onCommandSuggestions(packet.id(), new Suggestions(StringRange.between(packet.start(), packet.start() + packet.length()), suggestions));
     }
 
-    @Inject(method="onBlockUpdate", at=@At(value="HEAD"), cancellable = true)
-    public void onBlockUpdate(BlockUpdateS2CPacket packet, CallbackInfo ci) {
-        if (packet.getState() == Blocks.TNT.getDefaultState() && MinecraftClient.getInstance().world.getBlockState(packet.getPos()).getRegistryEntry().getIdAsString().startsWith("pmod:"))
-            ci.cancel();
-    }
-
     @Inject(method="onEntitySpawn", at=@At(value="HEAD"), cancellable = true)
     public void onEntitySpawn(EntitySpawnS2CPacket packet, CallbackInfo ci) {
         if (packet.getEntityType() == EntityType.AREA_EFFECT_CLOUD && packet.getPitch() == -23.90625f) {
             MinecraftClient.getInstance().world.setBlockState(new BlockPos(((int) packet.getX()), ((int) packet.getY()), ((int) packet.getZ())), ProjectModificationClient.testBlock.getDefaultState());
             ci.cancel();
         }
+    }
+
+    @Inject(method="onScreenHandlerSlotUpdate", at=@At("HEAD"), cancellable = true)
+    public void onScreenHandlerSlotUpdate(ScreenHandlerSlotUpdateS2CPacket packet, CallbackInfo ci) {
+        if (MinecraftClient.getInstance().player == null) return;
+        if (!(MinecraftClient.getInstance().player.currentScreenHandler instanceof PlayerScreenHandler || MinecraftClient.getInstance().player.currentScreenHandler instanceof CreativeInventoryScreen.CreativeScreenHandler)) return;
+
+        if (MinecraftClient.getInstance().player.playerScreenHandler.getSlot(packet.getSlot()).getStack().getRegistryEntry().getIdAsString().startsWith("pmod:") && packet.getStack().getItem() == Items.BAT_SPAWN_EGG)
+            ci.cancel();
     }
 
 }

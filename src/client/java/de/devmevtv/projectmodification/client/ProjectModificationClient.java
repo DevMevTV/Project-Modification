@@ -7,9 +7,13 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroups;
+import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -25,17 +29,25 @@ public class ProjectModificationClient implements ClientModInitializer {
     public static boolean bypassCommand = false;
 
     public static Block testBlock;
+    public static Item testItem;
 
     @Override
     public void onInitializeClient() {
 
-        Identifier id = Identifier.of("pmod", "test_block");
-        RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, id);
+        Identifier testBlockId = Identifier.of("pmod", "test_block");
 
-        Block.Settings settings = AbstractBlock.Settings.create()
-                .registryKey(key);
+        Block.Settings testBlockSettings = AbstractBlock.Settings.create()
+                .registryKey(RegistryKey.of(RegistryKeys.BLOCK, testBlockId));
 
-        testBlock = Registry.register(Registries.BLOCK, key, new Block(settings));
+        testBlock = Registry.register(Registries.BLOCK, RegistryKey.of(RegistryKeys.BLOCK, testBlockId), new Block(testBlockSettings));
+
+        Identifier testItemId = Identifier.of("pmod", "test_item");
+        testItem = Registry.register(Registries.ITEM, RegistryKey.of(RegistryKeys.ITEM, testItemId), new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, testItemId))));
+
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
+            entries.add(testItem.getDefaultStack());
+        });
 
 
         // -----------
