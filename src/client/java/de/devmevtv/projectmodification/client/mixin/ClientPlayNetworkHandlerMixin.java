@@ -4,6 +4,7 @@ import com.mojang.brigadier.context.StringRange;
 import com.mojang.brigadier.suggestion.Suggestion;
 import com.mojang.brigadier.suggestion.Suggestions;
 import de.devmevtv.projectmodification.client.ProjectModificationClient;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -46,7 +47,7 @@ public class ClientPlayNetworkHandlerMixin {
 
     @Inject(method="onBlockUpdate", at=@At(value="HEAD"), cancellable = true)
     public void onBlockUpdate(BlockUpdateS2CPacket packet, CallbackInfo ci) {
-        if (MinecraftClient.getInstance().world.getBlockState(packet.getPos()).getRegistryEntry().getIdAsString().startsWith("pmod:"))
+        if (packet.getState() == Blocks.TNT.getDefaultState() && MinecraftClient.getInstance().world.getBlockState(packet.getPos()).getRegistryEntry().getIdAsString().startsWith("pmod:"))
             ci.cancel();
     }
 
