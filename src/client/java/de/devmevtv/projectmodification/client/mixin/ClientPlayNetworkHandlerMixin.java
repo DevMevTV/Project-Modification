@@ -53,7 +53,7 @@ public class ClientPlayNetworkHandlerMixin {
 
     @Inject(method="onEntitySpawn", at=@At(value="HEAD"), cancellable = true)
     public void onEntitySpawn(EntitySpawnS2CPacket packet, CallbackInfo ci) {
-        if (packet.getEntityType() == EntityType.AREA_EFFECT_CLOUD && packet.getPitch() == -23.90625f) {
+        if (packet.getEntityType() == EntityType.AREA_EFFECT_CLOUD && packet.getPitch() == -23.90625) {
             MinecraftClient.getInstance().world.setBlockState(new BlockPos(((int) packet.getX()), ((int) packet.getY()), ((int) packet.getZ())), ProjectModificationClient.testBlock.getDefaultState());
             ci.cancel();
         }
